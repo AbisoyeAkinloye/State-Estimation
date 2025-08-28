@@ -2,3 +2,6 @@
 
 ## State Space Representation
 
+### State Space Block Diagram
+
+### Observability of a system
