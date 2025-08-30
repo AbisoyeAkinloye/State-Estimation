@@ -1,0 +1,36 @@
+function [V_vec, SoC_vec] = OCVRRC_SS(Current)
+    % model paramters
+    R1 = 0.0045; 
+    R0 = 0.0096; 
+    C1 = 3860.14;
+    Tao = C1 * R1;
+    Cn = 5.4 * 3600;
+    eta = 1; 
+    DeltaT = 1;
+    
+    
+
+    % initialization
+    SoC_init = 0.8;
+    V1_init = 0;
+    X = [V1_init; SoC_init]
+
+    % state space matrices
+    A = [1-DeltaT/Tao 0; 0 1];
+    B = [DeltaT/C1; DeltaT/Cn];
+
+    % Accumulator
+    V_vec = [];
+    SoC_vec = [];
+
+    % model
+    for k = 1:length(Current)
+        U = Current(k);
+        X = A*X + B*U;
+        TerminalVoltage = OCV - (R0 * U) - V1;
+
+        V_vec = [V_vec; TerminalVoltage];
+        SoC_vec = [SoC_vec; SoC];
+
+    end
+end
